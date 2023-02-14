@@ -22,6 +22,28 @@ app.get('/api/hello', function(req, res) {
   res.json({ greeting: 'hello API' });
 });
 
+let index = 1;
+const map = {};
+
+app.post("/api/shorturl", (req, res) => {
+
+  const original_url = req.body.url;
+  const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+
+  if (original_url.match(urlRegex)) {
+    map[index] = original_url;
+    const short_url = index;
+    console.log(map);
+    index += 1;
+    res.json({ original_url, short_url })
+  }
+  else {
+    res.json({ error: 'invalid url' })
+  }
+
+});
+
+
 app.listen(port, function() {
   console.log(`Listening on port ${port}`);
 });
